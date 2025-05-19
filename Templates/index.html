@@ -1,0 +1,8 @@
+{% extends 'layouts/layout.html' %}
+{% block body%}
+    <h1>Datos desde SQL Server d</h1>
+    {% for p in listar_usuarios %}
+        <p>{{ p.id_usuario }} - {{ p.nombre_usuario }}- {{p.apellido_usuario}} - {{ p.correo_usuario }} - {{p.contraseña_usuario}}</p>
+    {% endfor %}
+
+{%endblock%}
