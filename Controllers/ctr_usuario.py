@@ -14,3 +14,7 @@ def listar_usuario():
     #         # Agrega más campos según el modelo
     #     })
     return usuarios
+
+# def registrar_usuario():
+#     Usuario.add()
+#     return pass

@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    {% if mensaje %}
+        <p style="color: red;">{{ mensaje }}</p>
+    {% endif %}
+    {% if mensaje_bueno %}
+        <p style="color: rgb(0, 255, 149);">{{ mensaje }}</p>
+    {% endif %}
+    <form action="/registro_usuario" method="POST">
+        <label for="">Nombre</label>
+        <input type="text" id="nombre" name="nombre">
+
+        <label for="">Apellido</label>
+        <input type="text" id="apellido" name="apellido">
+
+        <label for="">Correo</label>
+        <input type="text" id="correo" name="correo">
+
+        <label for="">Contraseña</label>
+        <input type="text" id="contraseña" name="contraseña">
+
+        <label for="">Confirmar contraseña</label>
+        <input type="text" id="conf_contraseña" name="conf_contraseña">
+
+        <button type="submit">Registrar</button>
+    </form>
+    <a href="{{url_for('login')}}">Ir a login</a>
+</body>
+</html>
+<script>
+    function registrar(){
+        event.preventDefault(); 
+        var cont = document.getElementById("contraseña").value
+        var conf_cont = document.getElementById("conf_contraseña").value
+        if (cont == conf_cont){
+            var Usuario = {
+                nombre: document.getElementById("nombre").value,
+                apellido: document.getElementById("apellido").value,
+                correo: document.getElementById("correo").value,
+                contraseña: document.getElementById("contraseña").value
+            }
+            console.log("Usuario registrado: ",Usuario)
+        }
+        else {
+            console.log("La contraseña no es igual")
+        }
+    }
+</script>

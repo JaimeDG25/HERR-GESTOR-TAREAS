@@ -15,12 +15,12 @@ class Prioridad(db.Model):
 
 class Categoria(db.Model):
     __tablename__ = 'categoria'
-    id_categoria = db.Column(db.String(4), primary_key=True)
+    id_categoria = db.Column(db.Integer, primary_key=True)
     nombre_categoria = db.Column(db.String(100), nullable=False)
 
 class Usuario(db.Model):
     __tablename__ = 'usuario'
-    id_usuario = db.Column(db.String(4), primary_key=True)
+    id_usuario = db.Column(db.Integer, primary_key=True,autoincrement=True)
     nombre_usuario = db.Column(db.String(100), nullable=False)
     apellido_usuario = db.Column(db.String(100), nullable=False)
     correo_usuario = db.Column(db.String(150), nullable=False)
@@ -28,7 +28,7 @@ class Usuario(db.Model):
 
 class Tarea(db.Model):
     __tablename__ = 'tarea'
-    id_tarea = db.Column(db.String(4), primary_key=True)
+    id_tarea = db.Column(db.Integer, primary_key=True,autoincrement=True)
     titulo_tarea = db.Column(db.String(150), nullable=False)
     descripcion_tarea = db.Column(db.String(500), nullable=True)
     fcreacion_tarea = db.Column(db.DateTime, default=datetime.utcnow)
@@ -36,8 +36,8 @@ class Tarea(db.Model):
 
     prioridad_id = db.Column(db.Integer, db.ForeignKey('prioridad.id_prioridad'), nullable=False)
     estado_id = db.Column(db.Integer, db.ForeignKey('estado.id_estado'), nullable=False)
-    catalogo_id = db.Column(db.String(4), db.ForeignKey('categoria.id_categoria'), nullable=False)
-    usuario_id = db.Column(db.String(4), db.ForeignKey('usuario.id_usuario'), nullable=False)
+    catalogo_id = db.Column(db.Integer, db.ForeignKey('categoria.id_categoria'), nullable=False)
+    usuario_id = db.Column(db.Integer, db.ForeignKey('usuario.id_usuario'), nullable=False)
 
     # Relaciones (opcional, pero recomendable)
     prioridad = db.relationship('Prioridad', backref='tareas')

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/enviar_datos" method="POST">
+        <label for="correo">Correo</label>
+        <input type="text" id="correo" name="correo">
+        <label for="contraseña">Contraseña</label>
+        <input type="password" id="contraseña" name="contraseña">
+        <button type="submit">Enviar los datos</button>
+    </form>
+    {% if correo %}
+        <p style="color: red;">{{ correo }}</p>
+    {% endif %}
+        <button onclick="Enviar()">Enviar datos</button>
+    <a href="{{url_for('registro_vista')}}">Ir a registro</a>
+    {% for u in query %}
+        <p>
+            {{u.id_usuario}} - {{u.nombre_usuario}} - {{u.apellido_usuario}} - {{u.correo_usuario}} - {{u.contraseña_usuario}}
+        </p>
+    {%endfor%}
+</body>
+</html>
+<script>
+    function Enviar(){
+        event.preventDefault(); 
+        var correo=document.getElementById("correo").value
+        var contraseña= document.getElementById("contraseña").value
+        console.log(correo)
+        console.log(contraseña)
+    }
+</script>

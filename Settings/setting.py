@@ -19,7 +19,7 @@ def get_connection():
 def get_sqlalchemy_uri():
     print('conexion establecida')
     return (
-        "mssql+pyodbc://@DESKTOP-0JUDDFN\\SQLEXPRESS/GESTORTAREAS"
+        "mssql+pyodbc://@DESKTOP-0JUDDFN\\SQLEXPRESS/GESTORTAREASUTP"
         "?driver=ODBC+Driver+17+for+SQL+Server"
         "&trusted_connection=yes"
     )
