@@ -4,5 +4,14 @@
     {% for p in listar_usuarios %}
         <p>{{ p.id_usuario }} - {{ p.nombre_usuario }}- {{p.apellido_usuario}} - {{ p.correo_usuario }} - {{p.contraseña_usuario}}</p>
     {% endfor %}
-
+    <a href="{{ url_for('correo') }}">
+        <button>Enviar correo</button>
+    </a>
 {%endblock%}
+<script>
+    window.onpageshow = function(event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    };
+</script>

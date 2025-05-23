@@ -1,35 +1,86 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Gestor de Herramientas</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css')}}">
 </head>
-<body>
-    <form action="/enviar_datos" method="POST">
-        <label for="correo">Correo</label>
-        <input type="text" id="correo" name="correo">
-        <label for="contraseña">Contraseña</label>
-        <input type="password" id="contraseña" name="contraseña">
-        <button type="submit">Enviar los datos</button>
-    </form>
-    {% if correo %}
-        <p style="color: red;">{{ correo }}</p>
-    {% endif %}
-        <button onclick="Enviar()">Enviar datos</button>
-    <a href="{{url_for('registro_vista')}}">Ir a registro</a>
-    {% for u in query %}
-        <p>
-            {{u.id_usuario}} - {{u.nombre_usuario}} - {{u.apellido_usuario}} - {{u.correo_usuario}} - {{u.contraseña_usuario}}
-        </p>
-    {%endfor%}
+
+<body class="">
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5 fondosuper">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                {% for u in query %}
+                                <p>
+                                    {{u.id_usuario}} - {{u.nombre_usuario}} - {{u.apellido_usuario}} -
+                                    {{u.correo_usuario}} -
+                                    {{u.contraseña_usuario}}
+                                </p>
+                                {%endfor%}
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Bienvenido usuario promedio!</h1>
+                                    </div>
+                                    <form class="user" action="/enviar_datos" method="POST">
+                                        <div class="form-group">
+                                            <label for="correo">
+                                                <strong>Correo</strong>
+                                            </label>
+                                            <input type="email" class="form-control form-control-user"
+                                                id="correo" name="correo" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contraseña">
+                                                <strong>Contraseña</strong>
+                                            </label>
+                                            <input type="password" class="form-control form-control-user"
+                                                id="contraseña" name="contraseña" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="custom-control custom-checkbox small">
+                                                <input type="checkbox" class="custom-control-input" id="customCheck">
+                                                <label class="custom-control-label" for="customCheck">Remember
+                                                    Me</label>
+                                            </div>
+                                        </div>
+                                        <button type="submit" class="btn btn-facebook btn-user btn-block">
+                                            Enviar los datos
+                                        </button>
+                                    </form>
+                                    <hr>
+                                    <div class="text-center">
+                                        <a href="forgot-password.html">Olvidó su contraseña?</a>
+                                    </div>
+                                    <div class="text-center">
+                                        <a href="{{url_for('registro_vista')}}">Crear una cuenta</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
 <script>
-    function Enviar(){
-        event.preventDefault(); 
-        var correo=document.getElementById("correo").value
-        var contraseña= document.getElementById("contraseña").value
+    function Enviar() {
+        event.preventDefault();
+        var correo = document.getElementById("correo").value
+        var contraseña = document.getElementById("contraseña").value
         console.log(correo)
         console.log(contraseña)
     }

@@ -1,51 +1,106 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css')}}">
 </head>
-<body>
-    {% if mensaje %}
-        <p style="color: red;">{{ mensaje }}</p>
-    {% endif %}
-    {% if mensaje_bueno %}
-        <p style="color: rgb(0, 255, 149);">{{ mensaje }}</p>
-    {% endif %}
-    <form action="/registro_usuario" method="POST">
-        <label for="">Nombre</label>
-        <input type="text" id="nombre" name="nombre">
 
-        <label for="">Apellido</label>
-        <input type="text" id="apellido" name="apellido">
-
-        <label for="">Correo</label>
-        <input type="text" id="correo" name="correo">
-
-        <label for="">Contraseña</label>
-        <input type="text" id="contraseña" name="contraseña">
-
-        <label for="">Confirmar contraseña</label>
-        <input type="text" id="conf_contraseña" name="conf_contraseña">
-
-        <button type="submit">Registrar</button>
-    </form>
-    <a href="{{url_for('login')}}">Ir a login</a>
+<body class="">
+    <div class="container">
+        <!-- Outer Row -->
+        <div class="row justify-content-center">
+            <div class="col-xl-10 col-lg-12 col-md-9">
+                <div class="card o-hidden border-0 shadow-lg my-5 fondosuper">
+                    <div class="card-body p-0">
+                        <!-- Nested Row within Card Body -->
+                        <div class="row">
+                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                                {% if mensaje %}
+                                <p style="color: red;">{{ mensaje }}</p>
+                                {% endif %}
+                                {% if mensaje_bueno %}
+                                <p style="color: rgb(0, 255, 149);">{{ mensaje }}</p>
+                                {% endif %}
+                            </div>
+                            <div class="col-lg-6">
+                                <div class="p-5">
+                                    <div class="text-center">
+                                        <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    </div>
+                                    <form class="user" action="/registro_usuario" method="POST">
+                                        <div class="form-group">
+                                            <label for="nombre">
+                                                <strong>Nombre</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-user" id="nombre"
+                                                name="nombre" aria-describedby="emailHelp"
+                                                placeholder="Enter Nombre Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="apellido">
+                                                <strong>Apellido</strong>
+                                            </label>
+                                            <input type="text" class="form-control form-control-user" id="apellido"
+                                                name="apellido" aria-describedby="emailHelp"
+                                                placeholder="Enter Apellido Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="correo">
+                                                <strong>Correo</strong>
+                                            </label>
+                                            <input type="email" class="form-control form-control-user" id="correo"
+                                                name="correo" aria-describedby="emailHelp"
+                                                placeholder="Enter Email Address...">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="contraseña">
+                                                <strong>Contraseña</strong>
+                                            </label>
+                                            <input type="password" class="form-control form-control-user"
+                                                id="contraseña" name="contraseña" placeholder="Password">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="conf_contraseña">
+                                                <strong>Confirmar_contraseña</strong>
+                                            </label>
+                                            <input type="password" class="form-control form-control-user"
+                                                id="conf_contraseña" name="conf_contraseña"
+                                                placeholder="conf_contraseña">
+                                        </div>
+                                        <button type="submit" class="btn btn-facebook btn-user btn-block">
+                                            Registrar
+                                        </button>
+                                    </form>
+                                    <div class="text-center">
+                                        <a href="{{url_for('login')}}">Ir a login</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
+
 </html>
 <script>
-    function registrar(){
-        event.preventDefault(); 
+    function registrar() {
+        event.preventDefault();
         var cont = document.getElementById("contraseña").value
         var conf_cont = document.getElementById("conf_contraseña").value
-        if (cont == conf_cont){
+        if (cont == conf_cont) {
             var Usuario = {
                 nombre: document.getElementById("nombre").value,
                 apellido: document.getElementById("apellido").value,
                 correo: document.getElementById("correo").value,
                 contraseña: document.getElementById("contraseña").value
             }
-            console.log("Usuario registrado: ",Usuario)
+            console.log("Usuario registrado: ", Usuario)
         }
         else {
             console.log("La contraseña no es igual")

@@ -6,6 +6,7 @@ from Controllers.ctr_usuario import listar_usuario
 from FireStore.fs_contrasena import generar_clave, convertir_hash
 from FireStore.fs_enviar_correo import Enviar_correo
 from FireStore.fs_usuario import usuarios_listado,usuario_registrado
+from FireStore.fs_rutas import login_required
 from Models.model import db, anuncio,Usuario
 
 #INICIALIZACION DE LA APP FLASK
@@ -20,7 +21,9 @@ ma = Marshmallow(app)
 with app.app_context():
     db.create_all()
 
+
 @app.route('/index')
+@login_required
 def index():
     listar_usuarios= usuarios_listado()
     print(get_sqlalchemy_uri())
@@ -32,24 +35,34 @@ def index():
     print("Hash SHA256 incognito:", convertir_hash(password))
     return render_template('index.html',listar_usuarios=listar_usuarios)
 
-#RUTA RAIZ DIRIGIENDO A UNA RUTA ESPECIFICA
+@app.route('/correo')
+def correo ():
+    password= generar_clave()
+    hasheado=convertir_hash(password)
+    resultado=Enviar_correo("jorshwild@gmail.com",password)
+    print(resultado)
+    return resultado
+
+
+# ===================================== RUTA RAIZ DIRIGIENDO A UNA RUTA ESPECIFICA ==========================================
 @app.route('/')
 def home():
     return redirect(url_for('login'))
+# ===================================== RUTA RAIZ DIRIGIENDO A UNA RUTA ESPECIFICA ==========================================
 
-#RUTA PARA EL LOGIN PRINCIPAL
+
+# ====================================== RUTA PARA EL LOGIN PRINCIPAL ======================================================
 @app.route('/login',methods=['GET', 'POST'] )
 def login():
     query = Usuario.query.all()
-    for usuario in query:
-        print("ID:", usuario.id_usuario)
-        print("Nombre:", usuario.nombre_usuario)
-        print("Apellido:", usuario.apellido_usuario)
-        print("Correo:", usuario.correo_usuario)
-        print("Contraseña:", usuario.contraseña_usuario)
-        print("---------------------")
-        correo = request.args.get('correo') 
-        print(correo)
+    # for usuario in query:
+    #     print("ID:", usuario.id_usuario)
+    #     print("Nombre:", usuario.nombre_usuario)
+    #     print("Apellido:", usuario.apellido_usuario)
+    #     print("Correo:", usuario.correo_usuario)
+    #     print("Contraseña:", usuario.contraseña_usuario)
+    #     print("---------------------")
+    correo = request.args.get('correo') 
     return render_template('login.html', query=query,correo=correo)
 
 #RUTA PARA ENVIAR DATOS 
@@ -61,10 +74,19 @@ def enviar_datos():
         contraseña = convertir_hash(contraseña)
         usuario = Usuario.query.filter_by(correo_usuario=correo, contraseña_usuario=contraseña).first()
         if usuario:
+            session['correo_usuario'] = correo  
             return redirect(url_for('index'))
         else:
             return redirect(url_for('login', mensaje='Correo o contraseña incorrectos'))
     return redirect(url_for('login',correo=correo))
+
+#RUTA PARA CERRAR LA SESSION
+@app.route('/logout')
+def logout():
+    session.clear()
+    return redirect(url_for('login')) 
+# ====================================== RUTA PARA EL LOGIN PRINCIPAL ======================================================
+
 
 # ================================================ SECCION REGISTRO ===========================================
 #RUTA PARA PODER REGISTRARTE 
@@ -100,12 +122,5 @@ def registro_usuario():
     return render_template('registro.html',mensaje=mensaje)
 # ================================================ SECCION REGISTRO ===========================================
 
-#RUTA PARA CERRAR LA SESSION
-@app.route('/logout')
-def logout():
-    session.clear()
-    return redirect(url_for('login')) 
-
-
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=9000)

@@ -13,7 +13,7 @@ def Enviar_correo(correo_destino,codigo_especial):
             # Configuración del servidor SMTP
             servidor = smtplib.SMTP("smtp.gmail.com", 587)
             servidor.starttls()
-            servidor.login("garciajhair22@gmail.com", "dtbg zznt vdkk dqaa")  # Usa contraseña de aplicación segura
+            servidor.login("garciajhair22@gmail.com", "ksjv slni uuro bzdz")  # Usa contraseña de aplicación segura
             #ksjv slni uuro bzdz
             # Crear el mensaje
             msg = MIMEMultipart()  # Utilizar MIMEMultipart para incluir asunto y cuerpo del correo
