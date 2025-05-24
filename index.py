@@ -1,13 +1,15 @@
 #IMPORTACIONES NECESARIAS DE CLASES Y METODOS NECESARIOS
 from flask import Flask, render_template,request,url_for,redirect,session
 from flask_marshmallow import Marshmallow
-from Settings.setting import get_sqlalchemy_uri ,get_connection
-from Controllers.ctr_usuario import listar_usuario
+from Models.model import db, Usuario, Tarea
+from Settings.setting import get_sqlalchemy_uri
+
+from Controllers.ctr_usuario import listar_usuario, consultar_usuario,escribir_usuario
 from FireStore.fs_contrasena import generar_clave, convertir_hash
 from FireStore.fs_enviar_correo import Enviar_correo
-from FireStore.fs_usuario import usuarios_listado,usuario_registrado
+from FireStore.fs_usuario import usuarios_listado,usuario_registrado,confirmar_contraseña
 from FireStore.fs_rutas import login_required
-from Models.model import db, anuncio,Usuario
+
 
 #INICIALIZACION DE LA APP FLASK
 app = Flask(__name__)
@@ -26,14 +28,10 @@ with app.app_context():
 @login_required
 def index():
     listar_usuarios= usuarios_listado()
-    print(get_sqlalchemy_uri())
-    print(anuncio.saludar())
-    print(get_connection())
-    #password = input("Ingresa una contraseña")
-    password ='contraseña'
-    print("Clave generada suprema:", generar_clave())
-    print("Hash SHA256 incognito:", convertir_hash(password))
-    return render_template('index.html',listar_usuarios=listar_usuarios)
+    correo = session.get('correo_usuario', 'Usuario no identificado')
+    nombre = session.get('nombre_usuario', 'Usuario no identificado')
+    escribir_usuario(nombre,correo)
+    return render_template('index.html',listar_usuarios=listar_usuarios, correo=correo,nombre=nombre)
 
 @app.route('/correo')
 def correo ():
@@ -54,16 +52,9 @@ def home():
 # ====================================== RUTA PARA EL LOGIN PRINCIPAL ======================================================
 @app.route('/login',methods=['GET', 'POST'] )
 def login():
-    query = Usuario.query.all()
-    # for usuario in query:
-    #     print("ID:", usuario.id_usuario)
-    #     print("Nombre:", usuario.nombre_usuario)
-    #     print("Apellido:", usuario.apellido_usuario)
-    #     print("Correo:", usuario.correo_usuario)
-    #     print("Contraseña:", usuario.contraseña_usuario)
-    #     print("---------------------")
-    correo = request.args.get('correo') 
-    return render_template('login.html', query=query,correo=correo)
+    query = listar_usuario()
+    return render_template('login.html', query=query)
+
 
 #RUTA PARA ENVIAR DATOS 
 @app.route('/enviar_datos', methods=['GET', 'POST'])
@@ -72,13 +63,15 @@ def enviar_datos():
         correo = request.form['correo']
         contraseña = request.form['contraseña']
         contraseña = convertir_hash(contraseña)
-        usuario = Usuario.query.filter_by(correo_usuario=correo, contraseña_usuario=contraseña).first()
+        usuario = consultar_usuario(correo,contraseña)
         if usuario:
-            session['correo_usuario'] = correo  
+            session['nombre_usuario'] = usuario.nombre_usuario
+            session['correo_usuario'] = usuario.correo_usuario
+            escribir_usuario(usuario.nombre_usuario,usuario.correo_usuario)
             return redirect(url_for('index'))
         else:
             return redirect(url_for('login', mensaje='Correo o contraseña incorrectos'))
-    return redirect(url_for('login',correo=correo))
+    return redirect(url_for('login'))
 
 #RUTA PARA CERRAR LA SESSION
 @app.route('/logout')
@@ -103,15 +96,18 @@ def registro_usuario():
         correo = request.form['correo']
         contraseña = request.form['contraseña']
         conf_contraseña = request.form ['conf_contraseña']
-        if contraseña != conf_contraseña :
-            mensaje = "La contraseña debe ser la misma"
+
+        if confirmar_contraseña(contraseña,conf_contraseña):
+            mensaje = confirmar_contraseña(contraseña,conf_contraseña)
             return render_template('registro.html',mensaje=mensaje)
+        
         obj_user = Usuario(
             nombre_usuario=nombre,
             apellido_usuario=apellido,
             correo_usuario=correo,
             contraseña_usuario=convertir_hash(contraseña)
         )
+
         mensaje = usuario_registrado(obj_user)
         if mensaje == "usuario creado exitosamente":
             Enviar_correo(correo,convertir_hash(contraseña))
@@ -119,6 +115,7 @@ def registro_usuario():
             db.session.add(obj_user)
             db.session.commit()
             return render_template('registro.html',mensaje=mensaje_bueno)
+        
     return render_template('registro.html',mensaje=mensaje)
 # ================================================ SECCION REGISTRO ===========================================
 

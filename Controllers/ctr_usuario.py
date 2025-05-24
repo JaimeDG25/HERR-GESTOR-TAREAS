@@ -1,20 +1,13 @@
 from Models.model import Usuario
-
+from flask import session,render_template
 def listar_usuario():
     usuarios= Usuario.query.all()
-    lista_usuario=[]
-
-    # for usuario in usuarios:
-    #     lista_usuario.append({
-    #         "id_usuario": usuario.id,
-    #         "nombre_usuario": usuario.nombre,
-    #         "apellido_usuario":usuario.apellido,
-    #         "correo_usuario": usuario.correo,
-    #         "contraseña_usuario":usuario.contraseña
-    #         # Agrega más campos según el modelo
-    #     })
     return usuarios
+def consultar_usuario(correo,contraseña):
+    usuario_encontrado = Usuario.query.filter_by(correo_usuario=correo, contraseña_usuario=contraseña).first()
+    return usuario_encontrado
 
-# def registrar_usuario():
-#     Usuario.add()
-#     return pass
+
+def escribir_usuario(nombre,correo):
+    verificar = print(f"Tu nombre de usuario: {nombre} ; tu correo: {correo}")
+    return verificar
