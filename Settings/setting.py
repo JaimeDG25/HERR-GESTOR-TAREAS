@@ -19,14 +19,26 @@ def get_connection():
     except Exception as ex:
         print("Error durante la conexión: {}".format(ex))
         return None
-    
-def get_sqlalchemy_uri():
-    print('conexion establecida')
-    db_server_name = os.getenv('DB_SERVER_NAME')
-    db_user_name = os.getenv('DB_USER_NAME')
 
+#CONEXION DE VERONIKA  
+# def get_sqlalchemy_uri():
+#     print('conexion establecida')
+#     db_server_name = os.getenv('DB_SERVER_NAME')
+#     db_user_name = os.getenv('DB_USER_NAME')
+
+#     return (
+#         f"mssql+pyodbc://{db_user_name}@{db_server_name}/GESTORTAREASUTP"
+#         "?driver=ODBC+Driver+17+for+SQL+Server"
+#         "&trusted_connection=yes"
+#     )
+
+#CONEXION DE JHAIR
+def get_sqlalchemy_uri():
+    # Retorna el URI de conexión para SQLAlchemy con pyodbc
+    db_name = "GESTORTAREASUTP"
+    server_name = "DESKTOP-0JUDDFN\\SQLEXPRESS"
     return (
-        f"mssql+pyodbc://{db_user_name}@{db_server_name}/GESTORTAREASUTP"
+        f"mssql+pyodbc://@{server_name}/{db_name}"
         "?driver=ODBC+Driver+17+for+SQL+Server"
         "&trusted_connection=yes"
     )
