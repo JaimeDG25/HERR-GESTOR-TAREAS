@@ -56,8 +56,3 @@ class Tarea(db.Model):
     estado = db.relationship('Estado', backref='tareas')
     usuario = db.relationship('Usuario', backref='tareas')
     proyecto = db.relationship('Proyecto', backref='tareas')
-
-class anuncio ():
-    def saludar():
-        saludo = 'hola'
-        return saludo

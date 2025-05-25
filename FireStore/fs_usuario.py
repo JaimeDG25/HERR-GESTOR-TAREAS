@@ -1,10 +1,11 @@
-from Controllers.ctr_usuario import listar_usuario
+from Controllers.ctr_usuario import Controll_Usuario
 from Models.model import Usuario
 from flask import session,render_template
 
+
 def usuarios_listado():
-    listar_usuario()
-    return listar_usuario()
+    controlador = Controll_Usuario()
+    return controlador.listar_usuario()
 
 def usuario_registrado( obj_user:Usuario):
     mensaje_registrar = ""
