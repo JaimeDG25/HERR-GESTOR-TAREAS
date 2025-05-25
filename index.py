@@ -1,7 +1,8 @@
 #IMPORTACIONES NECESARIAS DE CLASES Y METODOS NECESARIOS
 from flask import Flask, render_template,request,url_for,redirect,session
 from flask_marshmallow import Marshmallow
-from Models.model import db, Usuario, Tarea
+from flask_migrate import Migrate
+from Models.model import db, Usuario, Tarea,Estado,Prioridad,Categoria
 from Settings.setting import get_sqlalchemy_uri
 
 from Controllers.ctr_usuario import listar_usuario, consultar_usuario,escribir_usuario
@@ -17,6 +18,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = get_sqlalchemy_uri()
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = 'tu_clave_secreta'
 db.init_app(app)
+migrate = Migrate(app, db) 
 ma = Marshmallow(app)
 
 #GENERACION DE LOS MODELOS DE BASE DE DATOS
@@ -30,8 +32,30 @@ def index():
     listar_usuarios= usuarios_listado()
     correo = session.get('correo_usuario', 'Usuario no identificado')
     nombre = session.get('nombre_usuario', 'Usuario no identificado')
+    apellido = session.get('apellido_usuario', 'Usuario no identificado')
+    print("==============ESTADO=================")
+    estado = Estado.query.all()
+    for est in estado:
+        print(est.nombre_estado)
+    print("===============PRIORIDAD================")
+    prioridad = Prioridad.query.all()
+    for prio in prioridad:
+        print(prio.nombre_prioridad)
+    print("===============CATEGORIA================")
+    categoria = Categoria.query.all()
+    for cate in categoria:
+        print(cate.nombre_categoria)
+
     escribir_usuario(nombre,correo)
-    return render_template('index.html',listar_usuarios=listar_usuarios, correo=correo,nombre=nombre)
+    return render_template('index.html',
+                            listar_usuarios=listar_usuarios, 
+                            correo=correo,
+                            nombre=nombre,
+                            apellido=apellido,
+                            estado=estado,
+                            prioridad=prioridad,
+                            categoria=categoria,
+                            )
 
 @app.route('/correo')
 def correo ():
@@ -40,6 +64,9 @@ def correo ():
     resultado=Enviar_correo("jorshwild@gmail.com",password)
     print(resultado)
     return resultado
+# ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
+
+# ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
 
 
 # ===================================== RUTA RAIZ DIRIGIENDO A UNA RUTA ESPECIFICA ==========================================
@@ -67,6 +94,7 @@ def enviar_datos():
         if usuario:
             session['nombre_usuario'] = usuario.nombre_usuario
             session['correo_usuario'] = usuario.correo_usuario
+            session['apellido_usuario'] = usuario.apellido_usuario
             escribir_usuario(usuario.nombre_usuario,usuario.correo_usuario)
             return redirect(url_for('index'))
         else:
