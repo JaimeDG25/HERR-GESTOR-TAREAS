@@ -2,7 +2,10 @@
 Proyecto realizado en flask sobre un gestor de tareas tipo trello
 
 ## pasos para instalar
-pip install flask
+### instalar requerimientos
+pip install -r requirements.txt
+
+
 
 ### crear archivo env 
 # .env 
