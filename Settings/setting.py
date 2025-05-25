@@ -1,10 +1,14 @@
 # Settings/sql_server.py
 import pyodbc
+import os
+from dotenv import load_dotenv
+import urllib.parse
+load_dotenv()
 
 def get_connection():
     try:
         connection = pyodbc.connect(
-            'DRIVER={SQL Server};SERVER=DESKTOP-0JUDDFN\\SQLEXPRESS;DATABASE=GESTORTAREAS;UID=;PWD='
+            'DRIVER={SQL Server};SERVER=VS1\\INTEL;DATABASE=GESTORTAREASUTP;UID=;PWD='
         )
         cursor=connection.cursor()
         cursor.execute("select @@VERSION")
@@ -18,8 +22,11 @@ def get_connection():
     
 def get_sqlalchemy_uri():
     print('conexion establecida')
+    db_server_name = os.getenv('DB_SERVER_NAME')
+    db_user_name = os.getenv('DB_USER_NAME')
+
     return (
-        "mssql+pyodbc://@DESKTOP-0JUDDFN\\SQLEXPRESS/GESTORTAREASUTP"
+        f"mssql+pyodbc://{db_user_name}@{db_server_name}/GESTORTAREASUTP"
         "?driver=ODBC+Driver+17+for+SQL+Server"
         "&trusted_connection=yes"
     )
