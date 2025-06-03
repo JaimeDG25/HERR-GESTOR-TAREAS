@@ -11,9 +11,11 @@ from Settings.setting import get_sqlalchemy_uri
 
 #IMPORTACION DE CONTROLLERS
 from Controllers.ctr_usuario import Controll_Usuario
+from Controllers.ctr_proyecto import Controll_Proyecto
 
 #IMPORTACIONES DE FIRESTORE
 from FireStore.fs_usuario import usuarios_listado,usuario_registrado,confirmar_contraseña
+from FireStore.fs_proyecto import proyectos_listado,proyecto_registrado
 
 #IMPORTACIONES DE SOURCES
 from Sources.sr_contraseña import generar_clave,convertir_hash
@@ -153,3 +155,11 @@ def correo ():
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
+
+# ===================================== CREAR PROYECTO ====================================
+
+
+@app.route('/nuevo-proyecto', methods=['GET', 'POST'])
+def nuevo_proyecto():
+    print(">>> Entrando a /nuevo-proyecto")
+    return render_template('index.html')
