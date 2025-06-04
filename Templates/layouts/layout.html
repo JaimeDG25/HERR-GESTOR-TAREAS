@@ -176,7 +176,7 @@
 
                 <!-- Modal body -->
                 <div class="modal-body">
-                    <form class="user" action="/nuevo_proyecto" method="POST">
+                    <form class="user" action="/prueba" method="POST">
                         <div class="form-group">
                             <label for="tarea">
                                 <strong>Titulo del proyecto</strong>
@@ -200,16 +200,17 @@
                                     <select id="categoria" name="mi_select" class="form-control">
                                         <option value="" selected disabled hidden>Selecciona una opción</option>
                                         {% for c in categoria %}
-                                        <option value="{{ c.id_categoria }}">{{ c.nombre_categoria }}</option>
+                                        <option value="{{ c.nombre_categoria }}">{{ c.nombre_categoria }}</option>
                                         {% endfor %}
                                     </select>
                                 </div>
                             </div>
                         </div><br>
+                        <input type="submit" name="" id="" onclick="crearproyecto()">
                         <button type="submit" class="btn btn-primary btn-user btn-block">
                             Enviar los datos
                         </button>
-                    </form>
+                    </form>
                 </div>
 
                 <!-- Modal footer -->
