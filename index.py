@@ -64,6 +64,7 @@ def enviar_datos():
         contraseña = convertir_hash(contraseña)
         usuario = Controll_Usuario().consultar_usuario(correo,contraseña)
         if usuario:
+            session['id_usuario'] = usuario.id_usuario
             session['nombre_usuario'] = usuario.nombre_usuario
             session['correo_usuario'] = usuario.correo_usuario
             session['apellido_usuario'] = usuario.apellido_usuario
