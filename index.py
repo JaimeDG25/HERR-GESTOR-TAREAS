@@ -148,6 +148,35 @@ def correo ():
     resultado=Enviar_correo("jorshwild@gmail.com",password)
     print(resultado)
     return resultado
+
+
+# ===================================== CREAR PROYECTO ====================================
+
+@login_required
+@app.route('/nuevo_proyecto', methods=['POST'])
+def nuevo_proyecto():
+    print('Entraste')
+    if request.method == 'POST':
+        titulo = request.form['tarea']
+        descripcion = request.form['descripcion']
+        categoria = request.form['mi_select']
+        usuario = session.get('id_usuario')
+        obj_proy = Proyecto(
+            nombre_proyecto=titulo,
+            descripcion_proyecto=descripcion,
+            categoria_id=categoria,
+            usuario_id_p=usuario,
+        )
+        print(obj_proy)
+        mensaje = proyecto_registrado(obj_proy)
+        if mensaje == "proyecto creado exitosamente":
+            mensaje_bueno = "Felicidades, usuario creado exitosamente"
+            db.session.add(obj_proy)
+            db.session.commit()
+            return render_template('index.html',mensaje=mensaje_bueno)
+    return render_template('index.html')
+
+
 # ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
 
 # ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
@@ -156,33 +185,3 @@ def correo ():
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
 
-# ===================================== CREAR PROYECTO ====================================
-
-@login_required
-@app.route('/nuevo_proyecto', methods=['POST'])
-def nuevo_proyecto():
-    mensaje = print('Entraste')
-    # if request.method == 'POST':
-    #     titulo = request.form['tarea']
-    #     descripcion = request.form['descripcion']
-    #     categoria = request.form['mi_select']
-    #     usuario = session.get('id_usuario')
-    #     obj_proy = Proyecto(
-    #         nombre_proyecto=titulo,
-    #         descripcion_proyecto=descripcion,
-    #         categoria_id=categoria,
-    #         usuario_id_p=usuario,
-    #     )
-    #     mensaje = proyecto_registrado(obj_proy)
-    #     if mensaje == "proyecto creado exitosamente":
-    #         mensaje_bueno = "Felicidades, usuario creado exitosamente"
-    #         db.session.add(obj_proy)
-    #         db.session.commit()
-    #         return render_template('index.html',mensaje=mensaje_bueno)
-    return mensaje
-
-@app.route('/prueba', methods=['GET', 'POST'])
-def prueba ():
-    saludo='hola mundo'
-    print(saludo)
-    return render_template('index.html')
