@@ -11,9 +11,11 @@ from Settings.setting import get_sqlalchemy_uri
 
 #IMPORTACION DE CONTROLLERS
 from Controllers.ctr_usuario import Controll_Usuario
+from Controllers.ctr_proyecto import Controll_Proyecto
 
 #IMPORTACIONES DE FIRESTORE
 from FireStore.fs_usuario import usuarios_listado,usuario_registrado,confirmar_contraseña
+from FireStore.fs_proyecto import proyectos_listado,proyecto_registrado
 
 #IMPORTACIONES DE SOURCES
 from Sources.sr_contraseña import generar_clave,convertir_hash
@@ -62,6 +64,7 @@ def enviar_datos():
         contraseña = convertir_hash(contraseña)
         usuario = Controll_Usuario().consultar_usuario(correo,contraseña)
         if usuario:
+            session['id_usuario'] = usuario.id_usuario
             session['nombre_usuario'] = usuario.nombre_usuario
             session['correo_usuario'] = usuario.correo_usuario
             session['apellido_usuario'] = usuario.apellido_usuario
@@ -146,6 +149,35 @@ def correo ():
     resultado=Enviar_correo("jorshwild@gmail.com",password)
     print(resultado)
     return resultado
+
+
+# ===================================== CREAR PROYECTO ====================================
+
+@login_required
+@app.route('/nuevo_proyecto', methods=['POST'])
+def nuevo_proyecto():
+    print('Entraste')
+    if request.method == 'POST':
+        titulo = request.form['tarea']
+        descripcion = request.form['descripcion']
+        categoria = request.form['mi_select']
+        usuario = session.get('id_usuario')
+        obj_proy = Proyecto(
+            nombre_proyecto=titulo,
+            descripcion_proyecto=descripcion,
+            categoria_id=categoria,
+            usuario_id_p=usuario,
+        )
+        print(obj_proy)
+        mensaje = proyecto_registrado(obj_proy)
+        if mensaje == "proyecto creado exitosamente":
+            mensaje_bueno = "Felicidades, usuario creado exitosamente"
+            db.session.add(obj_proy)
+            db.session.commit()
+            return render_template('index.html',mensaje=mensaje_bueno)
+    return render_template('index.html')
+
+
 # ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
 
 # ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
@@ -153,3 +185,4 @@ def correo ():
 
 if __name__ == '__main__':
     app.run(debug=True, port=9000)
+
