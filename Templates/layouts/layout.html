@@ -72,6 +72,14 @@
                                 <button onclick="abrirModal()">
                                     agregar
                                 </button>
+                                {% for proyecto in proyectos_usuario %}
+                                <a class="nav-link" href="{{ url_for('ver_proyecto', proyecto_id=proyecto.id_proyecto) }}">
+                                    {{ proyecto.nombre_proyecto }}
+                                </a>
+                                {% endfor %}
+                                <a class="nav-link" href="{{ url_for('proyectos') }}">
+                                    Ver todos los proyectos
+                                </a>
                                 {% for p in listar_usuarios %}
                                 <p>{{ p.id_usuario }}-{{
                                     p.correo_usuario }}</p>

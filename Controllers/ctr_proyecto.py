@@ -12,4 +12,6 @@ class Controll_Proyecto():
     def escribir_proyecto(self,nombre):
         verificar = print(f"Proyecto: {nombre}")
         return verificar
-    
+    def listar_proyectos_usuario(self, id_usuario):
+        proyectos = Proyecto.query.filter_by(usuario_id_p=id_usuario).all()
+        return proyectos

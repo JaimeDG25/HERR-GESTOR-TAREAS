@@ -15,7 +15,7 @@
                     <span class="badge bg-secondary">{{ proyecto.categoria.nombre_categoria }}</span>
                 </div>
                 <div class="card-footer bg-transparent border-top-0">
-                    <a href="{{ url_for('detalle_proyecto', id=proyecto.id_proyecto) }}" class="btn btn-sm btn-primary">Ver más</a>
+                    <a href="{{ url_for('ver_proyecto', proyecto_id=proyecto.id_proyecto) }}" class="btn btn-sm btn-primary">Ver más</a>
                 </div>
             </div>
         </div>

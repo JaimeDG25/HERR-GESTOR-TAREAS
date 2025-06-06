@@ -126,6 +126,9 @@ def index():
     correo = session.get('correo_usuario', 'Usuario no identificado')
     nombre = session.get('nombre_usuario', 'Usuario no identificado')
     apellido = session.get('apellido_usuario', 'Usuario no identificado')
+
+    id_usuario = session.get('id_usuario') 
+    proyectos_usuario = Controll_Proyecto().listar_proyectos_usuario(id_usuario) 
     print("==============ESTADO=================")
     estado = Estado.query.all()
     for est in estado:
@@ -176,6 +179,24 @@ def nuevo_proyecto():
             db.session.commit()
             return render_template('index.html',mensaje=mensaje_bueno)
     return render_template('index.html')
+
+
+# ===================================== LISTAR PROYECTOS ====================================
+
+@login_required
+@app.route('/proyectos', methods=['GET', 'POST'])
+def proyectos():
+    usuario_id = session.get('id_usuario')
+    proyectos = Proyecto.query.filter_by(usuario_id_p=usuario_id).all()
+    return render_template('proyectos.html', proyectos=proyectos)
+
+# ===================================== MOSTRAR PROYECTO ====================================
+@login_required
+@app.route('/proyecto/<int:proyecto_id>')
+def ver_proyecto(proyecto_id):
+    proyecto = Proyecto.query.get_or_404(proyecto_id)
+    tareas = Tarea.query.filter_by(proyecto_id=proyecto_id).all()
+    return render_template('proyecto_detalle.html', proyecto=proyecto, tareas=tareas)
 
 
 # ===================================== RUTA RAIZ DIRIGIENDO A LA RUTA CONTENIDO ==========================================
