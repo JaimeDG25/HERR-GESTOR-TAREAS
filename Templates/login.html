@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestor de Herramientas</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/sb-admin-2.css')}}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/mejoras.css')}}">
 </head>
 
 <body class="">
@@ -17,16 +18,17 @@
                     <div class="card-body p-0">
                         <!-- Nested Row within Card Body -->
                         <div class="row">
-                            <div class="col-lg-6 d-none d-lg-block bg-login-image">
-                                {% for u in query %}
+                                <!-- {% for u in query %}
                                 <p>
                                     {{u.id_usuario}} - {{u.nombre_usuario}} - {{u.apellido_usuario}} -
                                     {{u.correo_usuario}} -
                                     {{u.contraseña_usuario}}
                                 </p>
-                                {%endfor%}
+                                {%endfor%} -->
+                            <div class="col-lg-6 d-none d-lg-flex align-items-center justify-content-center bg-login-image">
+                                <img src="{{ url_for('static', filename='img/logo.png') }}" alt="Logo" class="half-img">
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-6 coloreado">
                                 <div class="p-5">
                                     <div class="text-center">
                                         <h1 class="h4 text-gray-900 mb-4">Bienvenido usuario promedio!</h1>
@@ -50,12 +52,13 @@
                                         <div class="form-group">
                                             <div class="custom-control custom-checkbox small">
                                                 <input type="checkbox" class="custom-control-input" id="customCheck">
-                                                <label class="custom-control-label" for="customCheck">Remember
-                                                    Me</label>
+                                                <label class="custom-control-label" for="customCheck">
+                                                    Recuerdame
+                                                </label>
                                             </div>
                                         </div>
                                         <button type="submit" class="btn btn-facebook btn-user btn-block">
-                                            Enviar los datos
+                                            Iniciar session
                                         </button>
                                     </form>
                                     <hr>
